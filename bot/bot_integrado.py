@@ -119,11 +119,24 @@ def bot():
         interactions = interactions.append(inter, ignore_index=True)
 
         datos_cita = [nom_cliente, incoming_num]
-        with open(r"C:\Users\Telecomm\Desktop\version_control\agenda.csv", "w", newline= "") as agenda:
+
+        with open(r"C:\Users\Telecomm\Desktop\version_control\agenda.csv", "a", newline="") as agenda:
 
             nueva_cita = writer(agenda)
             nueva_cita.writerow(datos_cita)
             agenda.close()
+
+        citas = read_csv(r"C:\Users\Telecomm\Desktop\version_control\citas_db.csv", usecols= ["fecha","hora", "paciente"])
+        agenda = read_csv(r"C:\Users\Telecomm\Desktop\version_control\agenda.csv", usecols=["nombre", "telefono"])
+
+        agenda_nombre = agenda["nombre"].unique()
+        agenda_telefono = agenda["telefono"].unique()
+        df1 = DataFrame(agenda_nombre, columns = ["nombre"])
+        df2 = DataFrame(agenda_telefono, columns = ["telefono"])
+        agenda_actual = df1.join(df2)
+
+        agenda_actual.to_csv(r"C:\Users\Telecomm\Desktop\version_control\agenda.csv", index = False)
+
 
         incoming_msg_index = int(incoming_msg)-1
         db_cita = read_csv(r"C:\Users\Telecomm\Desktop\version_control\citas_db.csv", usecols=["fecha", "hora", "paciente"]).fillna(" ")
