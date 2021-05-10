@@ -62,12 +62,25 @@ def bot():
                 inter = {"time": incoming_time, "number": incoming_num, "type":"c2"}
                 interactions = interactions.append(inter, ignore_index=True)
 
-        else:
+        elif "2" in incoming_msg:
             message = "En breve se comunicara contigo un asistente."
             msg.body(message)
             responded = True
             inter = {"time": incoming_time, "number": incoming_num, "type":"asis"}
             interactions = interactions.append(inter, ignore_index=True)
+
+        else:
+            message = "Opcion no válida \n"
+            msg.body(message)
+            responded = True
+            message  = "¿En que podemos ayudarte?\n"
+            message += "1 - Agendar cita\n"
+            message += "2 - Solicitar atencion humana"
+            msg.body(message)
+            responded = True
+            inter = {"time": incoming_time, "number": incoming_num, "type":"hola"}
+            interactions = interactions.append(inter, ignore_index=True)
+
 
     elif last_int == "c2":
         c = {"nombre": incoming_msg, "numero": incoming_num}
@@ -78,7 +91,7 @@ def bot():
         print(cliente)
         nom_cliente = cliente["nombre"][0].split(" ")[0]
 
-        message  = f"Hola, {nom_cliente} en que horario deseas tu cita:\n"
+        message  = f" {nom_cliente} en que horario deseas tu cita:\n"
 
         citas = read_csv(r"C:\Users\Telecomm\Desktop\version_control\citas_db.csv", usecols= ["fecha","hora", "paciente"]).fillna(" ")
         citas = citas[:-1]
